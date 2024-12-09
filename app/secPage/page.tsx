@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Navbar from "../components/Navbar";
 
 const SecPage = () => {
   const [foods, setFoods] = useState([]);
@@ -69,7 +70,10 @@ const SecPage = () => {
 
     // บันทึกข้อมูลลงใน localStorage
     localStorage.setItem("userSelections", JSON.stringify(userSelections));
-    localStorage.setItem("calculatedSelections", JSON.stringify(updatedSelections));
+    localStorage.setItem(
+      "calculatedSelections",
+      JSON.stringify(updatedSelections)
+    );
 
     // รีเซ็ต checkbox และไปยังผู้ใช้คนถัดไปหรือหน้า thirdPage
     const checkboxes = document.querySelectorAll("input[type='checkbox']");
@@ -85,39 +89,45 @@ const SecPage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-900">
-      <h1 className="text-4xl font-bold text-center text-white mt-4 mb-4">เมนูอาหาร</h1>
+    <div className="font-title">
+      <Navbar></Navbar>
+      <div className="flex flex-col min-h-screen bg-white">
+        <h1 className="text-xl font-bold text-center text-black mt-6 ">
+          เมนูอาหาร
+        </h1>
+        <div className="flex flex-col items-center flex-grow">
+          <div className="w-screen max-w-md   rounded-lg p-4   text-black ">
+            <h2 className="text-2xl font-semibold mb-4 text-center">
+              {users[currentUserIndex]}
+            </h2>
 
-      <div className="flex flex-col justify-center items-center flex-grow">
-        <div className="w-full max-w-md bg-gray-800 shadow-lg rounded-lg p-4 text-gray-100 mt-2">
-          <h2 className="text-2xl font-semibold mb-4 text-center">
-            {users[currentUserIndex]}
-          </h2>
+            <div className="h-64 overflow-y-auto border border-zinc-300 border-2 rounded-2xl p-2  text-black font-bold ">
+              {foods.map((food, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-2 border-b  "
+                >
+                  <span>{food.name}</span>
+                  <span>{food.price}</span>
+                  <input
+                    type="checkbox"
+                    className="form-checkbox h-5 w-5  checkbox border-2 border-black "
+                    onChange={(e) =>
+                      handleCheckboxChange(food, e.target.checked)
+                    }
+                  />
+                </div>
+              ))}
+            </div>
 
-          <div className="h-64 overflow-y-auto border border-gray-700 rounded-md p-2">
-            {foods.map((food, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between p-2 border-b border-gray-700 last:border-b-0 hover:bg-gray-700"
+            <div className="flex justify-center mt-4">
+              <button
+                onClick={handleConfirm}
+                className="btn bg-red-600 text-white text-base border-none "
               >
-                <span>{food.name}</span>
-                <span>{food.price}</span>
-                <input
-                  type="checkbox"
-                  className="form-checkbox h-5 w-5 text-blue-500"
-                  onChange={(e) => handleCheckboxChange(food, e.target.checked)}
-                />
-              </div>
-            ))}
-          </div>
-
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={handleConfirm}
-              className="btn btn-primary"
-            >
-              ยืนยัน
-            </button>
+                ยืนยัน ✔️
+              </button>
+            </div>
           </div>
         </div>
       </div>

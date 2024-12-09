@@ -1,3 +1,4 @@
+import { title } from "process";
 import type { Config } from "tailwindcss";
 
 export default {
@@ -8,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        title: ["kanit", "serif"],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
