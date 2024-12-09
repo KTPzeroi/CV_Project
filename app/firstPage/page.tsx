@@ -8,19 +8,11 @@ const Page = () => {
   const [foodText, setFoodText] = useState(""); 
   const [priceText, setPriceText] = useState(""); 
   const [file, setFile] = useState(null);
-<<<<<<< HEAD
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [numUsers, setNumUsers] = useState(""); 
   const [userArray, setUserArray] = useState([]); 
   const [foods, setFoods] = useState([]); 
  
-=======
-  const [isModalOpen, setIsModalOpen] = useState(false); // ควบคุมการแสดงผล Popup
-  const [numUsers, setNumUsers] = useState(""); // สำหรับรับจำนวนผู้ใช้
-  const [userArray, setUserArray] = useState([]); // เก็บ array ของผู้ใช้
-  const [foods, setFoods] = useState([]); // เก็บข้อมูลอาหารพร้อมราคา
-
->>>>>>> e660e29800b1ceaffe86b7e306c59d5f93e73ae3
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
@@ -42,11 +34,7 @@ const Page = () => {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
-<<<<<<< HEAD
  
-=======
-
->>>>>>> e660e29800b1ceaffe86b7e306c59d5f93e73ae3
       if (type === "Foods") {
         setFoodText(response.data.text); // แสดงผลข้อความที่ได้จาก OCR สำหรับ Foods
       } else if (type === "Prices") {
@@ -80,7 +68,6 @@ const Page = () => {
       name: food,
       price: parseFloat(priceItems[index]), // แปลงราคาจาก string เป็นตัวเลข
     }));
-<<<<<<< HEAD
  
     setFoods(foodData); // เก็บข้อมูล foods ใน state
     setIsModalOpen(true); // เปิด Popup
@@ -88,31 +75,6 @@ const Page = () => {
     // เก็บข้อมูลลงใน localStorage
     localStorage.setItem("foods", JSON.stringify(foodData));
     localStorage.setItem("users", JSON.stringify(userArray));
-=======
-
-    setFoods(foodData); // เก็บข้อมูล foods ใน state
-    setIsModalOpen(true); // เปิด Popup
-
-    // เก็บข้อมูลลงใน localStorage
-    localStorage.setItem("foods", JSON.stringify(foodData));
-    localStorage.setItem("users", JSON.stringify(userArray));
-  };
-
-  const handleConfirmUsers = () => {
-    const num = parseInt(numUsers, 10);
-    if (isNaN(num) || num <= 0) {
-      alert("กรุณากรอกตัวเลขที่ถูกต้อง");
-      return;
-    }
-    const users = Array.from({ length: num }, (_, i) => `User ${i + 1}`);
-    setUserArray(users);
-    setIsModalOpen(false); // ปิด Popup
-
-    // เก็บข้อมูลผู้ใช้ลงใน localStorage
-    localStorage.setItem("users", JSON.stringify(users));
-    console.log("Users:", users); // แสดงผล array ของผู้ใช้
-    console.log("Foods:", foods); // แสดงข้อมูล foods ใน console
->>>>>>> e660e29800b1ceaffe86b7e306c59d5f93e73ae3
   };
  
   const handleConfirmUsers = () => {
@@ -211,11 +173,3 @@ const Page = () => {
 };
  
 export default Page;
-
-
-
-
-
-
-
-
