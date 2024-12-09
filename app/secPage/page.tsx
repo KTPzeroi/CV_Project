@@ -20,7 +20,7 @@ const Page = () => {
     if (savedUsers) {
       const usersArray = JSON.parse(savedUsers);
       setUsers(usersArray);
-      setUserSelections(usersArray.map(() => [])); // เตรียม array ว่างสำหรับเก็บข้อมูลแต่ละ user
+      setUserSelections(usersArray.map(() => [])); // เตรียม array ว่างสำหรับเก็บข้อมูลแต่ละ user555
     }
 
     const timeout = setTimeout(() => {
