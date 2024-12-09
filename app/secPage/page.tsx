@@ -1,11 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-const Page = () => {
+const SecPage = () => {
   const [foods, setFoods] = useState([]);
   const [currentUserIndex, setCurrentUserIndex] = useState(0);
   const [users, setUsers] = useState([]);
   const [userSelections, setUserSelections] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
     const savedFoods = localStorage.getItem("foods");
@@ -20,7 +22,7 @@ const Page = () => {
     if (savedUsers) {
       const usersArray = JSON.parse(savedUsers);
       setUsers(usersArray);
-      setUserSelections(usersArray.map(() => [])); // เตรียม array ว่างสำหรับเก็บข้อมูลแต่ละ user555
+      setUserSelections(usersArray.map(() => [])); // เตรียม array ว่างสำหรับเก็บข้อมูลแต่ละ user
     }
 
     const timeout = setTimeout(() => {
@@ -53,14 +55,33 @@ const Page = () => {
   const handleConfirm = () => {
     console.log("User Selections:", userSelections);
 
-    // รีเซ็ตค่า checkbox ทั้งหมด
+    // คำนวณราคาใหม่ โดยหารตามจำนวนคนที่เลือกเมนูซ้ำกัน
+    const updatedSelections = foods.map((food) => {
+      const count = userSelections.filter((selection) =>
+        selection.some((selectedFood) => selectedFood.name === food.name)
+      ).length;
+
+      if (count > 1) {
+        return { ...food, price: food.price / count };
+      }
+      return food;
+    });
+
+    // บันทึกข้อมูลลงใน localStorage
+    localStorage.setItem("userSelections", JSON.stringify(userSelections));
+    localStorage.setItem("calculatedSelections", JSON.stringify(updatedSelections));
+
+    // รีเซ็ต checkbox และไปยังผู้ใช้คนถัดไปหรือหน้า thirdPage
     const checkboxes = document.querySelectorAll("input[type='checkbox']");
     checkboxes.forEach((checkbox) => {
       checkbox.checked = false;
     });
 
-    // เปลี่ยนผู้ใช้ถัดไป
-    setCurrentUserIndex((prevIndex) => (prevIndex + 1) % users.length);
+    if (currentUserIndex === users.length - 1) {
+      router.push("/thirdPage");
+    } else {
+      setCurrentUserIndex((prevIndex) => prevIndex + 1);
+    }
   };
 
   return (
@@ -69,7 +90,9 @@ const Page = () => {
 
       <div className="flex flex-col justify-center items-center flex-grow">
         <div className="w-full max-w-md bg-gray-800 shadow-lg rounded-lg p-4 text-gray-100 mt-2">
-          <h2 className="text-2xl font-semibold mb-4 text-center">{users[currentUserIndex]}</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-center">
+            {users[currentUserIndex]}
+          </h2>
 
           <div className="h-64 overflow-y-auto border border-gray-700 rounded-md p-2">
             {foods.map((food, index) => (
@@ -82,9 +105,7 @@ const Page = () => {
                 <input
                   type="checkbox"
                   className="form-checkbox h-5 w-5 text-blue-500"
-                  onChange={(e) =>
-                    handleCheckboxChange(food, e.target.checked)
-                  }
+                  onChange={(e) => handleCheckboxChange(food, e.target.checked)}
                 />
               </div>
             ))}
@@ -104,15 +125,4 @@ const Page = () => {
   );
 };
 
-export default Page;
-
-
-
-
-
-
-
-
-
-
-
+export default SecPage;

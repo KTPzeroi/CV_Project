@@ -1,15 +1,17 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/navigation"; // Import useRouter
  
 const Page = () => {
-  const [foodText, setFoodText] = useState(""); // สำหรับรายการอาหาร
-  const [priceText, setPriceText] = useState(""); // สำหรับราคาอาหาร
+  const router = useRouter();
+  const [foodText, setFoodText] = useState(""); 
+  const [priceText, setPriceText] = useState(""); 
   const [file, setFile] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // ควบคุมการแสดงผล Popup
-  const [numUsers, setNumUsers] = useState(""); // สำหรับรับจำนวนผู้ใช้
-  const [userArray, setUserArray] = useState([]); // เก็บ array ของผู้ใช้
-  const [foods, setFoods] = useState([]); // เก็บข้อมูลอาหารพร้อมราคา
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [numUsers, setNumUsers] = useState(""); 
+  const [userArray, setUserArray] = useState([]); 
+  const [foods, setFoods] = useState([]); 
  
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -84,11 +86,14 @@ const Page = () => {
     const users = Array.from({ length: num }, (_, i) => `User ${i + 1}`);
     setUserArray(users);
     setIsModalOpen(false); // ปิด Popup
- 
+
     // เก็บข้อมูลผู้ใช้ลงใน localStorage
     localStorage.setItem("users", JSON.stringify(users));
     console.log("Users:", users); // แสดงผล array ของผู้ใช้
     console.log("Foods:", foods); // แสดงข้อมูล foods ใน console
+
+    // Navigate to secPage
+    router.push("/secPage");
   };
  
   return (
