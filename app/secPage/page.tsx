@@ -54,8 +54,6 @@ const SecPage = () => {
   };
 
   const handleConfirm = () => {
-    console.log("User Selections:", userSelections);
-
     // คำนวณราคาใหม่ โดยหารตามจำนวนคนที่เลือกเมนูซ้ำกัน
     const updatedSelections = foods.map((food) => {
       const count = userSelections.filter((selection) =>
@@ -75,16 +73,17 @@ const SecPage = () => {
       JSON.stringify(updatedSelections)
     );
 
-    // รีเซ็ต checkbox และไปยังผู้ใช้คนถัดไปหรือหน้า thirdPage
-    const checkboxes = document.querySelectorAll("input[type='checkbox']");
-    checkboxes.forEach((checkbox) => {
-      checkbox.checked = false;
-    });
-
+    // ไปยังผู้ใช้คนถัดไปหรือหน้า thirdPage
     if (currentUserIndex === users.length - 1) {
       router.push("/thirdPage");
     } else {
       setCurrentUserIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+
+  const handleBack = () => {
+    if (currentUserIndex > 0) {
+      setCurrentUserIndex((prevIndex) => prevIndex - 1);
     }
   };
 
@@ -112,6 +111,9 @@ const SecPage = () => {
                   <input
                     type="checkbox"
                     className="form-checkbox h-5 w-5  checkbox border-2 border-black "
+                    checked={userSelections[currentUserIndex]?.some(
+                      (selectedFood) => selectedFood.name === food.name
+                    )}
                     onChange={(e) =>
                       handleCheckboxChange(food, e.target.checked)
                     }
@@ -120,12 +122,19 @@ const SecPage = () => {
               ))}
             </div>
 
-            <div className="flex justify-center mt-4">
+            <div className="flex justify-between mt-4">
+              <button
+                onClick={handleBack}
+                className="btn bg-gray-600 text-white text-base border-none "
+                disabled={currentUserIndex === 0}
+              >
+               ◀ ย้อนกลับ  
+              </button>
               <button
                 onClick={handleConfirm}
                 className="btn bg-red-600 text-white text-base border-none "
               >
-                ยืนยัน ✔️
+                ยืนยัน ✔
               </button>
             </div>
           </div>
@@ -136,3 +145,4 @@ const SecPage = () => {
 };
 
 export default SecPage;
+
